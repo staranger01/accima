@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PhotoRecognition extends StatefulWidget {
   @override
@@ -42,37 +43,34 @@ class _PhotoRecognitionState extends State<PhotoRecognition> {
         body: Center(
           child: _isLoading
               ? Container(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator())
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator())
               : Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _image == null ? Container() : Image.file(_image),
-                SizedBox(
-                  height: 20,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _image == null ? Container() : Image.file(_image),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _output != null
+                          ? Text(
+                              convertLabel(_output[0]["label"]),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                              ),
+                            )
+                          : Container(
+                              child: Center(
+                                child: Text("Upload your Photo"),
+                              ),
+                            )
+                    ],
+                  ),
                 ),
-                _output != null
-                    ? Text(
-                  convertLabel(_output[0]["label"]),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),
-                )
-                    : Container(
-                  child: Center(
-                    child: Text("Upload your Photo"),
-                  ),
-                )
-              ],
-            ),
-          ),
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: pickImage,
@@ -84,11 +82,9 @@ class _PhotoRecognitionState extends State<PhotoRecognition> {
   convertLabel(String msg) {
     if (msg == "0 motion_blur") {
       return "Your photo is too blurry!";
-    }
-    else if (msg == "1 defocused_blur") {
+    } else if (msg == "1 defocused_blur") {
       return "Your photo is out of focus!";
-    }
-    else {
+    } else {
       return "Perfect, sharp, clean image!";
     }
   }
@@ -97,41 +93,40 @@ class _PhotoRecognitionState extends State<PhotoRecognition> {
     final _storage = FirebaseStorage.instance;
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var file = File(image.path);
+
+
     if (image == null) return null;
     setState(() {
       _isLoading = true;
       _image = image;
     });
 
-    if (image != null) {
-      try{
-        var snapshot = await _storage.ref()
-            .child('photoGrading/${_output[0]["label"]}')
-            .putFile(file);
+    try {
 
-        // var downloadURL =  await snapshot.ref.getDownloadURL();
 
-        Fluttertoast.showToast(
-            msg: "Successfully uploaded photo to Firebase!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-      }
-      catch(err){
-        Fluttertoast.showToast(
-            msg: err,
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-      }
+      await _storage.ref().child("photoGrading/${file.toString().split('/').last}").putFile(file);
+
+      // var downloadURL =  await snapshot.ref.getDownloadURL();
+
+
+
+      Fluttertoast.showToast(
+          msg: "Successfully uploaded photo ${file.toString().split('/').last} to Firebase!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } catch (err) {
+      Fluttertoast.showToast(
+          msg: err,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
 
     // Classify
@@ -139,6 +134,12 @@ class _PhotoRecognitionState extends State<PhotoRecognition> {
   }
 
   classifyImage(File image) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    CollectionReference imagesCollection =
+    firestore.collection('photoGrading');
+
+
     var output = await Tflite.runModelOnImage(
       path: image.path,
       numResults: 2,
@@ -150,6 +151,12 @@ class _PhotoRecognitionState extends State<PhotoRecognition> {
       _isLoading = false;
       _output = output;
     });
+
+    await imagesCollection
+        .add({'file': image.path.toString().split('/').last, 'result': output[0]["label"]})
+        .then((value) => print('Image added'))
+        .catchError((onError) => {print(onError.toString())});
+
   }
 
   loadModel() async {
@@ -161,7 +168,6 @@ class _PhotoRecognitionState extends State<PhotoRecognition> {
 
   uploadImage() {
     // Permission check
-
   }
 
   @override
