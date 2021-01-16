@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "905708304559",
+    "project_id": "accima",
+    "storage_bucket": "accima.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905708304559:android:1af2b06b670f3c5b24bc5a",
+        "android_client_info": {
+          "package_name": "com.accima.flutterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905708304559-vun4vrukbv9bi6081s5v4anus9tninco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_hqhAFDJ_SLov_DhnmIiwE6aYxloN06g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905708304559-vun4vrukbv9bi6081s5v4anus9tninco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
