@@ -87,8 +87,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: 'Chat',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.camera_alt),
+            label: 'Photography',
           ),
         ],
         currentIndex: _selectedIndex,
