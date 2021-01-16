@@ -1,8 +1,13 @@
 import 'package:Accima/photography_rec_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {

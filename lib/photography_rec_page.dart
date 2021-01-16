@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
@@ -95,43 +96,43 @@ class _PhotoRecognitionState extends State<PhotoRecognition> {
   pickImage() async {
     final _storage = FirebaseStorage.instance;
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    // var file = File(image.path);
+    var file = File(image.path);
     if (image == null) return null;
     setState(() {
       _isLoading = true;
       _image = image;
     });
 
-    // if (image != null) {
-    //   try{
-    //     var snapshot = await _storage.ref()
-    //         .child('photoGrading/${_output[0]["label"]}')
-    //         .putFile(file);
-    //
-    //     // var downloadURL =  await snapshot.ref.getDownloadURL();
-    //
-    //     Fluttertoast.showToast(
-    //         msg: "Successfully uploaded photo to Firebase!",
-    //         toastLength: Toast.LENGTH_SHORT,
-    //         gravity: ToastGravity.CENTER,
-    //         timeInSecForIosWeb: 1,
-    //         backgroundColor: Colors.green,
-    //         textColor: Colors.white,
-    //         fontSize: 16.0
-    //     );
-    //   }
-    //   catch(err){
-    //     Fluttertoast.showToast(
-    //         msg: err,
-    //         toastLength: Toast.LENGTH_LONG,
-    //         gravity: ToastGravity.CENTER,
-    //         timeInSecForIosWeb: 1,
-    //         backgroundColor: Colors.red,
-    //         textColor: Colors.white,
-    //         fontSize: 16.0
-    //     );
-    //   }
-    // }
+    if (image != null) {
+      try{
+        var snapshot = await _storage.ref()
+            .child('photoGrading/${_output[0]["label"]}')
+            .putFile(file);
+
+        // var downloadURL =  await snapshot.ref.getDownloadURL();
+
+        Fluttertoast.showToast(
+            msg: "Successfully uploaded photo to Firebase!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+      catch(err){
+        Fluttertoast.showToast(
+            msg: err,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+    }
 
     // Classify
     classifyImage(image);
