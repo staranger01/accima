@@ -106,7 +106,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
             // ...
           )),
-      body:  Column(children: [
+      body:  SingleChildScrollView( child: Column(children: [
         Container(
           margin: const EdgeInsets.only(top: 40, left:15),
           child: CircleAvatar( radius: 40.0,  backgroundImage: AssetImage('assets/girl.jpg', )),
@@ -135,19 +135,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
 
         Container(
+    child: CircleAvatar( radius: 50.0,  backgroundImage: AssetImage('assets/smile.png', )),
+
 
             margin: const EdgeInsets.all(20.0),
-            padding: const EdgeInsets.all(30.0),
+
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
 
               border: Border.all(color: Colors.grey),
-    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    borderRadius: BorderRadius.all(Radius.circular(20.0)),
 
           )
         )
 
-      ]),
+      ])),
 
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
