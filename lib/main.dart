@@ -135,7 +135,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
 
         Container(
-    child: CircleAvatar( radius: 50.0,  backgroundImage: AssetImage('assets/smile.png', )),
+    child:   Image.asset(
+          'assets/smile.png',
+          height: 150,
+          width: 150,
+        ),
 
 
             margin: const EdgeInsets.all(20.0),
