@@ -120,7 +120,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
         Bubble(
           margin: BubbleEdges.only(top: 20),
-          child: Text('Hi Jason! We got your video resume and wanted to talk to you more, do you have availability this week for a chat?'),
+          child: Text('Hi Anna Hustle! We got your video resume and wanted to talk to you more, do you have availability this week for a chat?'),
         ),
         Bubble(
           margin: BubbleEdges.only(top: 20, left: 40),
@@ -131,7 +131,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
         Bubble(
           margin: BubbleEdges.only(top: 20),
-          child: Text('Jason, we have availability on Friday at 5:30pm for an initial interview over video call. It will last approximately an hour. Please let me know if you have anymore questions, hope you have a good afternoon! ', textAlign: TextAlign.right),
+          child: Text('Anna, we have availability on Friday at 5:30pm for an initial interview over video call. It will last approximately an hour. Please let me know if you have anymore questions, hope you have a good afternoon! ', textAlign: TextAlign.right),
         ),
 
         Container(
