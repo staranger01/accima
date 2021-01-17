@@ -10,6 +10,9 @@
 // bar items. The first one is selected.](https://flutter.github.io/assets-for-api-docs/assets/material/bottom_navigation_bar.png)
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:bubble/bubble.dart';
 
 void main() => runApp(MyApp());
 
@@ -62,20 +65,90 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Color(0xfff2f5f7);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
-      ),
-      body: Row(
-        children: <Widget>[
-          Text("Hello world"),
-          FlatButton(
-            onPressed: () {},
-            color: Colors.amber,
-            child: null,
+
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(175.0), // here the desired height
+          child: AppBar(
+            flexibleSpace: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(top: 30, left: 20),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Image.asset(
+                              'assets/disney-2.png',
+                              height: 150,
+                              width: 150,
+                            ),
+                          )),
+                      SizedBox(height: 50),
+                      Text("Hi there!",
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: Colors.black, letterSpacing: .5),
+                              color: Color(0xff59595a),
+                              fontSize: 19)),
+                      Expanded(
+                          child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                  "Welcome to Disney, how can we help you today?",
+                                  style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          color: Colors.grey, fontSize: 14))))),
+                    ])),
+            backgroundColor: mainColor,
+
+            // ...
+          )),
+      body:  Column(children: [
+        Container(
+          margin: const EdgeInsets.only(top: 40, left:15),
+          child: CircleAvatar( radius: 40.0,  backgroundImage: AssetImage('assets/girl.jpg', )),
+
+        ),  Bubble(
+
+          color: Color.fromARGB(255, 212, 234, 244),
+
+          margin: BubbleEdges.only(top: 8.0),
+          child: Text('TODAY', style: TextStyle(fontSize: 10)),
+        ),
+        Bubble(
+          margin: BubbleEdges.only(top: 20),
+          child: Text('Hi Jason! We got your video resume and wanted to talk to you more, do you have availability this week for a chat?'),
+        ),
+        Bubble(
+          margin: BubbleEdges.only(top: 20, left: 40),
+          alignment: Alignment.topRight,
+          nip: BubbleNip.rightTop,
+          color: Color.fromRGBO(225, 255, 199, 1.0),
+          child: Text('Hi Sarah, Thank you so much for getting back to me! My availability dates/times are: Monday - Wednesday: After 6pm EST. Friday: After 5PM EST.', textAlign: TextAlign.right),
+        ),
+        Bubble(
+          margin: BubbleEdges.only(top: 20),
+          child: Text('Jason, we have availability on Friday at 5:30pm for an initial interview over video call. It will last approximately an hour. Please let me know if you have anymore questions, hope you have a good afternoon! ', textAlign: TextAlign.right),
+        ),
+
+        Container(
+
+            margin: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(30.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+
+              border: Border.all(color: Colors.grey),
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+
           )
-        ],
-      ),
+        )
+
+      ]),
+
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
